@@ -66,6 +66,11 @@
         color: wheat;
     }
     
+    input[type="button"] {
+        background-color: brown;
+        color: wheat;
+    }
+    
     input[type="reset"] {
         background-color: brown;
         color: wheat;

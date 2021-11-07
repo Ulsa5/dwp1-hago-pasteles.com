@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Para las alertas bonitas -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/scripts.js"></script>
+
+    <title>Vendo Pasteles.com!</title>
+</head>
+
+<body onload="inicializarArregloCotizacion();">
+    <header>
+        <div>
+            <div class="col-2-rows ">
+                <a href="../index.html "><img src="../images/milogotipo.png " alt="logotipo " width="200px " height="200px "></a>
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="../index.html ">Inicio</a>
+                        </li>
+                        <li>
+                            <a class="active" href="./cotizaciones.html">Cotizaciones</a>
+                        </li>
+                        <li>
+                            <a href="./movimientos-existencias.html">Existencias</a>
+                        </li>
+                        <li>
+                            <a href="./movimientos-entradas.html">Entradas</a>
+                        </li>
+                        <li>
+                            <a href="./movimientos-salidas.html">Salidas</a>
+                        </li>
+                        <li>
+                            <a href="./cuentas.html">Mi Cuenta</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <br>
+    <br>
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <center>
+                    <h1>Cotizaciones</h1>
+                    <!-- <h4>Administración</h4> -->
+                    <br>
+                </center>
+            </div>
+
+
+            <!-- datos del cliente -->
+            <div class="row" style="margin-bottom: 20px;">
+                <center>
+                    <h5 style="background-color: black; color: white; padding: 10px;">DATOS DEL CLIENTE</h5>
+                </center>
+            </div>
+
+            <div class="form-group row">
+                <label for="cliente" class="col-sm-2 col-form-label">Cliente:</label>
+                <div class="col-sm-10 ">
+                    <input type="text" class="form-control" id="cliente">
+                </div>
+
+                <label for="fecha" class="col-sm-2 col-form-label">Fecha:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="fecha">
+                </div>
+
+                <label for="prioridad" class="col-sm-2 col-form-label">Prioridad de Entrega:</label>
+
+                <div class="col-sm-10">
+                    <select onchange="llenarTablaCotizaciones();" id="prioridadEntrega" name="select" class="form-select" aria-label="Default Select Example">
+                        <option value="0" selected>Elegir tipo de entrega</option>
+                        <option value="1" >Entrega Inmediata</option>
+                        <option value="2">Entrega Normal</option>
+                </div>
+
+                <label for="observaciones" class="col-sm-2 col-form-label">Observaciones:</label>
+                <div class="col-sm-10">
+                    <textarea id="observaciones" rows="3" class="form-control">Observaciones
+                    </textarea>
+                </div>
+
+            </div>
+
+
+
+            <!-- datos de la cotización -->
+            <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+                <center>
+                    <h5 style="background-color: black; color: white; padding: 10px;">DETALLE DE LA COTIZACIÓN</h5>
+                </center>
+            </div>
+
+            <div class="form-group row">
+                <label for="codigo" class="col-sm-2 col-form-label">Código:</label>
+                <div class="col-sm-10 ">
+                    <input type="text" class="form-control" id="codigo-coti">
+                </div>
+
+                <label for="producto" class="col-sm-2 col-form-label">Producto:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="producto-coti">
+                </div>
+
+                <label for="cantidad" class="col-sm-2 col-form-label">Cantidad:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="cantidad-coti">
+                </div>
+                
+                <label for="precio" class="col-sm-2 col-form-label">Precio:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="precio-coti">
+                </div>
+            </div>
+
+
+
+            <!--DESPLIEGUE DE PRODUCTOS COTIZADOS  -->
+
+            <div class="container" style="margin-top: 20px;">
+                <a onclick="agregarEntradaCotizacion();" class="btn btn-dark" style="margin-bottom: 20px;">
+                    + Agregar producto
+                </a>
+                <table class="table table-striped" style="text-align:center;">
+                    <thead style="background-color: black; color: white;">
+                        <tr>
+                            <th>CODIGO</th>
+                            <th>PRODUCTO</th>
+                            <th>CANTIDAD</th>
+                            <th>PRECIO</th>
+                            <th>SUBTOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tBodyCotizacion">
+
+                    </tbody>
+                </table>
+            </div>
+            <br>
+
+
+            <!-- TOTALES -->
+            <div class="container form-group row" style="padding-left: 0%; text-align: right; background-color: black; color: white;">
+
+                <div class="col-sm-6" style="background-color: white;"></div>
+                <label for="" class="col-sm-4 col-form-label ">SUBTOTAL COTIZACIÓN:</label>
+                <div class="col-sm-2">
+                    <p id="subTotalCotizacion" style="font-weight: bold; text-align: right; margin-top: 5px; margin-bottom: 0px;">
+                        0
+                    </p>
+                </div>
+
+                
+                <div class="col-sm-6" style="background-color: white;"></div>
+                <label for="" class="col-sm-4 col-form-label">DESCUENTO DEL<span id="porcentajeDescuento" class="col-form-label"></span> </label>
+                <div class="col-sm-2">
+                    <p id="totalDescuento" style="font-weight: bold; text-align: right; margin-top: 5px; margin-bottom: 0px;">
+                        0
+                    </p>
+                </div>
+
+                <div class="col-sm-6" style="background-color: white;"></div>
+                <label for="" class="col-sm-4 col-form-label ">TOTAL COTIZACIÓN:</label>
+                <div class="col-sm-2">
+                    <p id="totalCotizacion" style="font-weight: bold; text-align: right; margin-top: 5px; margin-bottom: 0px;">
+                        0
+                    </p>
+                </div>
+            </div>
+            <br><br>
+
+        </div>
+    </section>
+
+    <footer>
+        <p align="center"> &copy; 2021 - Saúl Escobar <br>Desarrollo Web - UMG</p>
+    </footer>
+
+    <!-- Importando cdn y javascript de bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
